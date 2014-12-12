@@ -1,4 +1,6 @@
-mlp
+MLP
 ===
 
-A multilayer perceptron written in C++11
+A multilayer perceptron written in C++11.
+
+
