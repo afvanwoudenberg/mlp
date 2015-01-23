@@ -23,7 +23,7 @@ struct Node {
     std::array<double, SIZE> weightDiffs;
     constexpr std::size_t size() const { return SIZE; }
 
-    Node() : weightDiffs({0}), thresholdDiff(0.0)
+    Node() : thresholdDiff(0.0), weightDiffs({0})
     {
         auto rnd_func = [](double &d) 
             { d = -1 + 2 * (rand() / static_cast<double>(RAND_MAX)); };
@@ -102,6 +102,7 @@ struct Layer {
     }
 
     template<typename... TYPES> void setInput(const std::tuple<TYPES...> &tuple) { previousLayer.setInput(tuple); }
+    template<std::size_t INPUTSIZE> void setInput(const std::array<double,INPUTSIZE> &array) { previousLayer.setInput(array); }
     void setInput(const std::vector<double> &vector) { previousLayer.setInput(vector); }
     void setInput(double dbl) { previousLayer.setInput(dbl); }
 
@@ -166,7 +167,8 @@ struct Layer<SIZE,Node<0>,void> { // inputlayer
     constexpr std::size_t size() const { return SIZE; }
     void ff() { }
     template<class... TYPES> void setInput(const std::tuple<TYPES...> &tuple) { setNodesFromTuple<TYPES...>(tuple, nodes); }
-    void setInput(const std::vector<double> &vector) { for (int i = 0; i<SIZE; ++i) nodes[i].output = vector[i]; }
+    void setInput(const std::array<double,SIZE> &array) { for (std::size_t i = 0; i<SIZE; ++i) nodes[i].output = array[i]; }
+    void setInput(const std::vector<double> &vector) { for (std::size_t i = 0; i<SIZE; ++i) nodes[i].output = vector[i]; }
     void setInput(double dbl) { nodes[0].output = dbl; }
     template<std::size_t NEXTTYPE, std::size_t NEXTSIZE> void calcErr(const std::array<Node<NEXTTYPE>,NEXTSIZE> &nextNodes) { }
     void bpErr(const double learningRate, const double momentum) { };
