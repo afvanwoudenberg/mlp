@@ -5,6 +5,8 @@
 #define MLP_H
 
 #include <cstdlib>
+#include <vector>
+#include <cmath>
 #include <ctime>
 #include <array>
 #include <tuple>
